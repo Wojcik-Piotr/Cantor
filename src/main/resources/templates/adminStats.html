@@ -1,0 +1,13 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/layout :: head"></head>
+<body>
+    <div th:replace="fragments/layout :: menu"></div>
+    <h1>Admin stats</h1>
+    <p>Tu są statystyki:</p>
+
+    <p th:text="'All checks ' + ${allChecksCount}"></p>
+    <p th:text="'EUR checks ' + ${eurChecksCount}"></p>
+    <p th:text="'most popular ' + ${mostPopular}"></p>
+</body>
+</html>

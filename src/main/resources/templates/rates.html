@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="fragments/layout :: head"></head>
+<body>
+    <div th:replace="fragments/layout :: menu"></div>
+    <h1>Kursy wymiany walut</h1>
+    <table>
+        <tr th:each="rate : ${rates}">
+            <td th:text="${rate.getName()}"></td>
+            <td th:text="${rate.getBuyRate()}"></td>
+            <td th:text="${rate.getSellRate()}"></td>
+        </tr>
+    </table>
+</body>
+</html>

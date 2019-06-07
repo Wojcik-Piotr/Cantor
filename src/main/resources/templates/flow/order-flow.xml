@@ -1,0 +1,35 @@
+<flow xmlns="http://www.springframework.org/schema/webflow"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.springframework.org/schema/webflow
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
+
+    <!-- http://localhost:8081/enterOrder -->
+    <!--TODO w 2 drugim etapie zamówienia daj użytkownikowi przycisk "odśwież kurs" -->
+    <!--TODO wprowadź małe losowe wahania kursu aby dać złudzenie ciągłej zmiany kursu -->
+    <!--TODO (opcjonalnie) daj użytkownikowi możliwość wyboru kupna/sprzedaży wybranej waluty i zamiany na PLN -->
+    <!--TODO (opcjonalnie) daj użytkownikowi możliwość dowolnego wyboru obu walut -->
+
+    <on-start>
+        <evaluate expression="new pl.sda.kantor.flow.OrderProcess()" result="flowScope.order" />
+    </on-start>
+
+    <view-state id="enterOrder" view="flow/enterOrder" model="order">
+        <transition on="proceed" to="reviewOrder">
+            <evaluate expression="exchangeRatesService.getRate(order.getCurrency()).getSellRate()" result="flowScope.rate" />
+        </transition>
+        <transition on="cancel" to="orderCancelled" />
+    </view-state>
+
+    <view-state id="reviewOrder" view="flow/reviewOrder" model="order">
+        <transition on="confirm" to="orderConfirmed">
+            <evaluate expression="orderService.submitOrder(order.getCurrency(), order.value)"/>
+        </transition>
+        <transition on="revise" to="enterOrder" />
+        <transition on="cancel" to="orderCancelled" />
+    </view-state>
+
+    <end-state id="orderConfirmed" view="flow/orderConfirmed" />
+
+    <end-state id="orderCancelled" view="flow/orderCancelled" />
+
+</flow>
